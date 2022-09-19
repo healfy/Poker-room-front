@@ -1,9 +1,14 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import MainView from "@/views/MainView.vue"
 </script>
 
 <template>
-  <RouterView />
+  <RouterView>
+    <Suspense>
+      <main-view/>
+    </Suspense>
+  </RouterView>
 </template>
 
 <script>

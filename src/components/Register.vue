@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form @submit.prevent="post">
+    <form @submit.prevent="register">
       <h2>Register</h2>
       <div class="input">
         <label for="email">Email address</label>
@@ -38,35 +38,11 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import { ref } from "vue";
+import { useStore } from "vuex";
 const message = ref("");
-
-
-function show(error) {
-  console.log(error)
-}
-
-function post(submitEvent) {
-  let data = {
-    "email": submitEvent.target.elements.email.value,
-    "password": submitEvent.target.elements.password.value,
-    "confirm_password": submitEvent.target.elements.confirm_password.value,
-  }
-  axios.post('http://0.0.0.0:8001/v1/users/register', data)
-    .then((res) => {
-
-    })
-    .catch((error) => {
-      message.value = 'werded'
-      for (const errorKey in error.response.data.detail) {
-        let elem = error.response.data.detail[errorKey];
-        console.log(elem.loc[1], elem.msg)
-      }
-
-      // alert(error.response.data.detail[0])
-    });
-}
+const store = useStore()
+const register = (submitEvent) => store.dispatch('auth/register', submitEvent)
 </script>
 
 <style>

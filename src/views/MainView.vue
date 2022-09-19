@@ -1,12 +1,19 @@
 <template>
-
   <header>
-    <div class="wrapper">
+    <div class="wrapper" v-if="auth">
       <HelloWorld msg="Welcome to the home of online poker" />
         <nav>
-          <RouterLink to="/login">Login</RouterLink>
-          <RouterLink to="/register">Register</RouterLink>
-        </nav></div>
+          <RouterLink to="/tables">Tables</RouterLink>
+          <RouterLink to="" @click="logout">Logout</RouterLink>
+        </nav>
+    </div>
+    <div class="wrapper" v-else>
+      <HelloWorld msg="Welcome to the home of online poker" />
+      <nav>
+        <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/register">Register</RouterLink>
+      </nav>
+    </div>
   </header>
   <main>
     <router-view v-slot="{ Component }">
@@ -20,10 +27,12 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
-import { ref } from "vue";
+import { computed } from 'vue'
+import { useStore } from "vuex";
 
-let user = ref(null)
-
+const store = useStore()
+const auth = computed(() => store.getters['auth/isAuth'])
+const logout = () => {store.dispatch('auth/logout')}
 </script>
 
 <style scoped>
@@ -99,9 +108,3 @@ nav a:first-of-type {
   opacity: 0;
 }
 </style>
-
-<script>
-export default {
-  name: "Main"
-};
-</script>

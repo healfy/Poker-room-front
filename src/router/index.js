@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MainView from "./../views/MainView.vue";
+import MainView from "@/views/MainView.vue";
+import store from "@/store";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,12 +11,17 @@ const router = createRouter({
       component: MainView,
       children: [
         {
+          path: '/tables',
+          name: 'tables',
+          component: () => import('../components/Tables.vue'),
+        },
+        {
           path: '/register',
           name: 'register',
           component: () => import('../components/Register.vue')
         },
         {
-          path: 'login',
+          path: '/login',
           name: 'login',
           component: () => import('../components/Login.vue')
         },
@@ -23,5 +29,10 @@ const router = createRouter({
     },
   ]
 })
+
+router.beforeEach(async (to, from, next) => {
+  await store.dispatch('auth/check_auth')
+  next()
+});
 
 export default router

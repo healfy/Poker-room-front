@@ -28,17 +28,9 @@
 </template>
 
 <script setup>
-import { mapActions } from "vuex";
-import axios from 'axios'
-
-async function login(submitEvent) {
-  let data = {
-    "password": submitEvent.target.elements.password.value,
-    "email": submitEvent.target.elements.email.value,
-  }
-  let res = await axios.post('http://0.0.0.0:8001/v1/auth/login', data)
-}
-
+import { useStore } from "vuex";
+const store = useStore()
+const login = (submitEvent) => store.dispatch('auth/login', submitEvent)
 </script>
 
 
